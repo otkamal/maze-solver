@@ -1,11 +1,13 @@
 import constants
+import sys
 from maze import Point, Maze
 from window import Window
 
 def main() -> int:
     window = Window(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)
-    maze = Maze(window, Point(10, 10), 15, 30)
+    maze = Maze(window, Point(10, 10), int(sys.argv[1]), int(sys.argv[2]))
     maze.draw()
+    maze.solve()
     window.wait_for_close()
     return 0
 

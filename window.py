@@ -1,6 +1,6 @@
 import constants
 from line import Line
-from tkinter import Tk, BOTH, Canvas
+from tkinter import Tk, Canvas
 
 class Window:
     def __init__(self, width: int, height: int):
@@ -8,7 +8,7 @@ class Window:
         self.__root.geometry(f"{width}x{height}")
         self.__root.title(constants.ROOT_TITLE)
         self.__canvas = Canvas()
-        self.__canvas.pack(fill=BOTH, expand=True)
+        self.__canvas.pack(fill = "both", expand = True)
         self.__running = False
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
 

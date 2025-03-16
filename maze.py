@@ -30,6 +30,10 @@ class Maze:
                 self.__draw_cell(i, j)
         self.__break_entrance_and_exit()
         self.__break_walls_r(0, 0)
+        self.__reset_cells_visited()
+
+    def solve(self):
+        self.__solve_r(0, 0)
 
     def __create_cells(self):
         current_position = self.__position
@@ -100,8 +104,47 @@ class Maze:
 
             self.__break_walls_r(next_cell[0], next_cell[1])
 
+    def __reset_cells_visited(self):
+        for i in range(self.__num_cols):
+            for j in range(self.__num_rows):
+                self.cells[i][j]["visited"] = False
 
+    def __get_exit(self):
+        return (self.__num_cols - 1, self.__num_rows - 1)
+    
+    def __solve_r(self, i, j):
+        self.__animate()
+        self.cells[i][j]["visited"] = True
+        if (i, j) == self.__get_exit():
+            return True
+        
+        top = (i, j - 1)
+        bottom = (i, j + 1)
+        left = (i - 1, j)
+        right = (i + 1, j)
 
+        directions = [top, bottom, left, right]
+        labels = ["top", "bottom", "left", "right"]
+        for d in range(len(directions)):
+            x = directions[d][0]
+            y = directions[d][1]
+            dir = labels[d]
+            if 0 <= x < self.__num_cols and 0 <= y < self.__num_rows:
+                current_cell = self.cells[i][j]["cell"]
+                neighbor = self.cells[x][y]["cell"]
+                if current_cell.is_connected(dir, neighbor) and not self.__is_cell_visited(x, y):
+                    current_cell.draw_move(neighbor)
+                    status = self.__solve_r(x, y)
+                    if status:
+                        return True
+                    
+                    current_cell.draw_move(neighbor, undo = True)
+
+        return False
+
+    def __is_cell_visited(self, i, j):
+        return self.cells[i][j]["visited"]
+            
     def __animate(self):
         self.__window.redraw()
-        time.sleep(0.05)
+        time.sleep(0.025)

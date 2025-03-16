@@ -20,10 +20,24 @@ class Cell:
             (self.__top_left.position_y + self.__bottom_right.position_y) / 2
         )
     
+    def is_connected(self, dir: str, other) -> bool:
+        match dir:
+            case "left":
+                return not self.walls["left"] and not other.walls["right"]
+            case "right":
+                return not self.walls["right"] and not other.walls["left"]
+            case "bottom":
+                return not self.walls["bottom"] and not other.walls["top"]
+            case "top":
+                return not self.walls["top"] and not other.walls["bottom"]
+            
+        raise ValueError("error: dir must be in [left, right, bottom, top]")
+    
     def draw_move(self, to_cell, undo = False) -> None:
         color = "red"
         if undo:
             color = "gray"
+            
         self.__window.draw_line(Line(self.get_center(), to_cell.get_center()), line_color=color, line_width=2)
 
     def draw(self, line_color: str, line_width: int) -> None:
