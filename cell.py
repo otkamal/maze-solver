@@ -12,6 +12,9 @@ class Cell:
         self.__window = window
         self.walls = walls
 
+    def __str__(self):
+        return f"Cell Object @ {self.__top_left} -> {self.__bottom_right}"
+
     def get_center(self) -> Point:
         return Point(
             (self.__top_left.position_x + self.__bottom_right.position_x) / 2,
