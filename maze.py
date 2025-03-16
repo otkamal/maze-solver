@@ -13,7 +13,7 @@ class Maze:
             cell_size_y: int = 35,
         ):
 
-        self.__cells = []
+        self.cells = []
         self.__position = position
         self.__num_rows = num_rows
         self.__num_cols = num_cols
@@ -22,6 +22,15 @@ class Maze:
         self.__window = window
 
         self.__create_cells()
+        for i in range(num_cols):
+            for j in range(num_rows):
+                self.__draw_cell(i, j)
+        self.__break_entrance_and_exit()
+
+        for i in range(num_cols):
+            for j in range(num_rows):
+                print(self.cells[i][j])
+
 
     def __create_cells(self):
         current_position = self.__position
@@ -38,11 +47,18 @@ class Maze:
                 )
                 current_position += Point(0, self.__cell_size_y)
             current_position = self.__position + Point(self.__cell_size_x * (i + 1), 0)
-            self.__cells.append(column)
+            self.cells.append(column)
             
     def __draw_cell(self, i: int, j: int):
-        self.__cells[i][j].draw(constants.MAZE_LINE_COLOR, constants.MAZE_LINE_WIDTH)
+        self.cells[i][j].draw(constants.MAZE_LINE_COLOR, constants.MAZE_LINE_WIDTH)
         self.__animate()
+
+    def __break_entrance_and_exit(self):
+        self.cells[0][0].walls["top"] = False
+        self.__draw_cell(0, 0)
+
+        self.cells[self.__num_cols - 1][self.__num_rows - 1].walls["bottom"] = False
+        self.__draw_cell(self.__num_cols - 1, self.__num_rows - 1)
 
     def __animate(self):
         self.__window.redraw()

@@ -5,15 +5,14 @@ class Cell:
     def __init__(self,
                  window: Window, 
                  top_left: Point,
-                 bottom_right: Point,
-                 walls: dict = {"left": True, "right": True, "top": True, "bottom": True}):
+                 bottom_right: Point):
         self.__top_left = top_left
         self.__bottom_right = bottom_right
         self.__window = window
-        self.walls = walls
+        self.walls = {"left": True, "right": True, "top": True, "bottom": True}
 
     def __str__(self):
-        return f"Cell Object @ {self.__top_left} -> {self.__bottom_right}"
+        return f"Cell Object [{self.walls}] @ {self.__top_left} -> {self.__bottom_right}"
 
     def get_center(self) -> Point:
         return Point(
@@ -29,29 +28,31 @@ class Cell:
 
     def draw(self, line_color: str, line_width: int) -> None:
         for wall in ["left", "right", "top", "bottom"]:
-            if self.walls[wall]:
-                match wall:
-                    case "left":
-                        line = Line(
-                            self.__top_left,
-                            Point(self.__top_left.position_x, self.__bottom_right.position_y)
-                        )
-                    case "right":
-                        line = Line(
-                            Point(self.__bottom_right.position_x, self.__top_left.position_y),
-                            self.__bottom_right
-                        )
-                    case "top":
-                        line = Line(
-                            self.__top_left,
-                            Point(self.__bottom_right.position_x, self.__top_left.position_y)
-                        )
-                    case "bottom":
-                        line = Line(
-                            Point(self.__top_left.position_x, self.__bottom_right.position_y),
-                            self.__bottom_right
-                        )
+            match wall:
+                case "left":
+                    line = Line(
+                        self.__top_left,
+                        Point(self.__top_left.position_x, self.__bottom_right.position_y)
+                    )
+                case "right":
+                    line = Line(
+                        Point(self.__bottom_right.position_x, self.__top_left.position_y),
+                        self.__bottom_right
+                    )
+                case "top":
+                    line = Line(
+                        self.__top_left,
+                        Point(self.__bottom_right.position_x, self.__top_left.position_y)
+                    )
+                case "bottom":
+                    line = Line(
+                        Point(self.__top_left.position_x, self.__bottom_right.position_y),
+                        self.__bottom_right
+                    )
 
+            if self.walls[wall]:
                 self.__window.draw_line(line, line_color, line_width)
+            else:
+                self.__window.draw_line(line, "#d9d9d9", line_width)
 
                 
