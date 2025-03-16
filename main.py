@@ -4,7 +4,8 @@ from window import Window
 
 def main() -> int:
     window = Window(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)
-    maze = Maze(window, Point(10, 10), 5, 5)
+    maze = Maze(window, Point(10, 10), 15, 30)
+    maze.draw()
     window.wait_for_close()
     return 0
 
