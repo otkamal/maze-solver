@@ -1,5 +1,6 @@
 import constants
 import sys
+import time
 from maze import Point, Maze
 from window import Window
 
